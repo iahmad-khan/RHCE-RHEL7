@@ -21,3 +21,8 @@
    20  firewall-cmd --permanent --add-service=mysql
    22  firewall-cmd --reload
    23  ss -tulpn |grep mysql
+   
+   edit /etc/my.cnf and add this line to enable only local socket.
+   skip-networking=1
+   
+   and then restart the service
