@@ -1,0 +1,23 @@
+#installation and initial configuration of mariadb client and server
+    #on rhel7/cc7
+    
+    3  yum install mariadb mariadb-client
+    4  yum groups install mariadb mariadb-client
+    5  vi /etc/my.cnf
+    6  ip a s
+    7  vi /etc/my.cnf
+    8  echo bind-address=172.31.25.42
+    9  systemctl enable mariadb
+   10  systemctl start mariadb.service 
+   11  mysql_secure_installation 
+   12  systemctl restart mariadb.service 
+   13  mysql -u root -p
+   14  systemctl disable iptables
+   15  yum install firewalld
+   16  systemctl enable firewalld
+   17  systemctl start firewalld
+   18  firewall-cmd --permanent --add-service=mysql
+   19  systemctl restart firewalld
+   20  firewall-cmd --permanent --add-service=mysql
+   22  firewall-cmd --reload
+   23  ss -tulpn |grep mysql
