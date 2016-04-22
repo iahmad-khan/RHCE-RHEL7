@@ -40,3 +40,4 @@
    functions avg , count , sum 
    subqueiers
    
+   backup and restore using mysqldump
