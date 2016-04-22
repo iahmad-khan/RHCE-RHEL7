@@ -45,3 +45,4 @@
    mysqldump -u root -p --all-databases > alldb.sql 
    #restore
    mysql -u root -p dbname < backup.sql
+   the dbname must already exist in case of single database name
