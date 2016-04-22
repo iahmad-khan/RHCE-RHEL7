@@ -42,5 +42,6 @@
    
    backup and restore using mysqldump
    mysqldump -u root -p database_name(s) > backupname.sql
-   mysqldump -u root -p --all-databases > alldb.sql
-   
+   mysqldump -u root -p --all-databases > alldb.sql 
+   #restore
+   mysql -u root -p dbname < backup.sql
