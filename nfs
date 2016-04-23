@@ -25,3 +25,30 @@
    52  systemctl restart nfs
    53  systemctl status rpcbind
    54  systemctl status nfs
+   
+#client side
+  257  yum install nfs-utils
+  258  systemctl enable rpcbind
+  259  systemctl start rpcbind
+  260  systemctl status rpcbind
+  261  mkdir /test1
+  262  mkdir /test2
+  263  cat /etc/fstab 
+  264  mount -t nfs -o rw 172.31.25.42:/test1 /test1
+  265  df -h
+  266  cd /test1/
+  267  ls
+  268  mount -t nfs 172.31.25.42:/test2 /test2
+  269  cd /test2
+  270  touch myfile
+  271  cd /test1
+  272  touch myfile1
+  273  ls
+  274  df -h
+  275  cd
+  276  vi /etc/fstab 
+  
+  281  umount /test1
+  282  umount /test2
+  283  mount -a
+  285  df -h
