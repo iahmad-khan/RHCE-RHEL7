@@ -1,0 +1,27 @@
+#server side configuration
+
+   30  yum install nfs-utils
+   31  mkdir /test1 /test2
+   32  cat /etc/selinux/config 
+   33  getsebool -a |grep nfs
+   34  getsebool -a |grep nfs_export
+   35  setsebool nfs_export_all_ro=1
+   36  setsebool nfs_export_all_rw=1
+   37  getsebool -a |grep nfs_export
+   38  firewall-cmd --state
+   39  systemctl status firewalld.service walld
+   40  firewall-cmd --permanent --add-service=nfs
+   41  firewall-cmd --reload
+   42  systemctl enable rpcbind nfs-server
+   43  systemctl start rpcbind
+   44  systemctl start nfs
+   45  systemctl status rpcbind
+   46  systemctl status nfs
+   47  vi /etc/exports
+   48  man exportfs
+   49  exportfs -avr
+   50  cat /var/lib/nfs/etab 
+   51  systemctl restart rpcbind
+   52  systemctl restart nfs
+   53  systemctl status rpcbind
+   54  systemctl status nfs
