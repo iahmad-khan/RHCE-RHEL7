@@ -61,3 +61,15 @@ writable       = yes
   102  smbclient -L //localhost -U user1
 
 
+#client side configuration:
+  291  yum install samba samba-client cifs-utils
+  292  useradd user1
+  293  cat /etc/passwd
+  294  passwd user1 
+  301  cat /etc/passwd
+  302  smbclient -L //172.31.25.42/sambash -U user1
+  303  mkdir /shared
+  313  mount //172.31.25.42/sambashare /shared -t cifs -o username=user1,password=pass,uid=1002,gid=1002
+  314  df -h
+
+
