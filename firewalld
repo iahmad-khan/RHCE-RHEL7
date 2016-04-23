@@ -1,0 +1,40 @@
+   61  yum install -y httpd firewalld
+   62  systemctl enable httpd
+   63  systemctl start httpd
+   64  echo "This is server1" > /var/www/html/index.html
+   65  systemctl mask iptables.service 
+   66  systemctl mask ip6tables.service 
+   67  systemctl start firewalld
+   68  systemctl status firewalld
+   69  firewall-cmd --reload 
+   70  firewall-cmd --get-default-zone 
+   71  firewall-cmd --get-zones
+   72  firewall-cmd --list-all
+   73  firewall-cmd --list-all-zones 
+   74  firewall-cmd --list-services 
+   75  firewall-cmd --zone=public --add-port=80/tcp
+   76  firewall-cmd --list-all
+   77  firewall-cmd --zone=internal --list-all
+   78  firewall-cmd --reload 
+   79  firewall-cmd --list-all
+   80  firewall-cmd --permanent --zone=public --add-port=80/tcp
+   81  firewall-cmd --reload 
+   82  firewall-cmd --list-all
+   83  firewall-cmd --permanent --remove-port=80/tcp
+   84  firewall-cmd --reload 
+   85  firewall-cmd --list-all
+   86  firewall-cmd --permanent --add-source=10.0.0.100/24
+   87  firewall-cmd --reload 
+   88  firewall-cmd --zone=internal --list-all
+   89  ip a s
+   90  firewall-cmd --permanent --zone=internal --add-port=80/tcp
+   91  firewall-cmd --reload 
+   92  ip a s
+   93  systemctl status httpd
+   94  curl localhost
+   95  firewall-cmd --permanent --zone=internal --add-source=10.0.0.100/24
+   96  firewall-cmd --permanent --remove-source=10.0.0.100/24
+   97  firewall-cmd --permanent --zone=internal --add-source=10.0.0.100/24
+   98  firewall-cmd --reload 
+   99  firewall-cmd --list-all --zone=internal 
+   100 firewall-cmd --panic-on
