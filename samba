@@ -1,0 +1,63 @@
+#server side config:
+
+   65  yum install samba samba-client
+   66  mkdir /sambash
+   67  getsebool -a |grep smaba_export
+   68  getsebool -a |grep samba_export
+   69  getsebool -a |grep samba_nfs
+   70  getsebool -a |grep samba_share_nfs
+   71  setsebool samba_share_nfs=1
+   72  setsebool samba_export_all_ro=1
+   73  setsebool samba_export_all_rw=1
+   74  setsebool -P samba_export_all_rw=1
+   75  setsebool -P samba_export_all_ro=1
+   76  setsebool -P samba_share_nfs=1
+   77  getsebool -a |grep smaba
+   78  getsebool -a |grep samba
+   79  semanage fcontext -at samba_share_t "/sambash(/.*)?"
+   80  restorecon /sambash/
+   81  ls -Zd /sambash/
+   82  firewall-cmd --state
+   83  firewall-cmd --permanent --add-service=samba
+   84  firewall-cmd --reload 
+   85  vi /etc/samba/smb.conf 
+   86  cd /etc/samba/
+   87  mv smb.conf smb.conf.orig
+   88  vi smb.conf
+   89  ip a s
+   90  vi smb.conf
+
+[global]
+workgroup       =  mylabserver
+server string   = 172.31.25.42
+hosts allow     = 127. 172.31.97.98
+interfaces      = lo eth0 172.31.25 
+passdb backend  = smbpasswd
+security        = user
+log file        = /var/log/samba/%m.log
+max log size    = 5000
+
+[sambashare]
+comment        = /sambashare
+browsable      = yes
+path           = /sambash
+public         = yes
+valid users    = user1
+write list     = user1
+writable       = yes
+
+
+   91  testparm 
+   92  cd
+   93  smbpasswd -a user1
+   94  useradd user1
+   95  smbpasswd -a user1
+   96  cat /var/lib/samba/private/smbpasswd 
+   97  man pdbedit
+   98  pdbedit -Lv
+   99  systemctl enable smb
+  100  systemctl start smb
+  101  systemctl status smb
+  102  smbclient -L //localhost -U user1
+
+
