@@ -1,0 +1,22 @@
+
+
+1) Which of the following is not a correct IPv6 address?
+
+Correct
+Correct answer
+
+2001:db8::3::2
+
+2) Which option when passed to the ss command is used to display all connection states for TCP sockets?
+
+Correct
+Correct answer
+
+-a
+
+3) Which of the following is correct for displaying all listening tcp connections and the socket/port number
+
+Correct
+Correct answer
+
+ss -tln
