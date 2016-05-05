@@ -1,0 +1,158 @@
+1. Install the NFS Server service. Once installed, query the status of the service, enable it for automatic start, 
+start it and then verify it is running.
+
+    [root@tcox4 ~]# yum install nfs-utils
+
+    Loaded plugins: fastestmirror
+
+    Repodata is over 2 weeks old. Install yum-cron? Or run: yum makecache fast
+
+    base                                                     | 3.6 kB     00:00     
+
+    extras                                                   | 3.4 kB     00:00     
+
+    updates                                                  | 3.4 kB     00:00     
+
+    (1/2): extras/7/x86_64/primary_db                          |  74 kB   00:00     
+
+    (2/2): updates/7/x86_64/primary_db                         | 3.3 MB   00:01     
+
+    Determining fastest mirrors
+
+     * base: mirrors.advancedhosters.com
+
+     * extras: mirror.es.its.nyu.edu
+
+     * updates: mirror.us.leaseweb.net
+
+    Package 1:nfs-utils-1.3.0-0.8.el7.x86_64 already installed and latest version
+
+    Nothing to do
+
+    [root@tcox4 ~]# systemctl status nfs-server
+
+    nfs-server.service - NFS server and services
+
+       Loaded: loaded (/usr/lib/systemd/system/nfs-server.service; disabled)
+
+       Active: inactive (dead)
+
+    [root@tcox4 ~]# systemctl enable nfs-server
+
+    ln -s '/usr/lib/systemd/system/nfs-server.service' '/etc/systemd/system/multi-user.target.wants/nfs-server.service'
+
+    [root@tcox4 ~]# systemctl start nfs-server
+
+    [root@tcox4 ~]# systemctl status nfs-server
+
+    nfs-server.service - NFS server and services
+
+       Loaded: loaded (/usr/lib/systemd/system/nfs-server.service; enabled)
+
+       Active: active (exited) since Tue 2015-09-08 21:03:07 UTC; 3s ago
+
+      Process: 1760 ExecStart=/usr/sbin/rpc.nfsd $RPCNFSDARGS (code=exited, status=0/SUCCESS)
+
+      Process: 1759 ExecStartPre=/usr/sbin/exportfs -r (code=exited, status=0/SUCCESS)
+
+     Main PID: 1760 (code=exited, status=0/SUCCESS)
+
+       CGroup: /system.slice/nfs-server.service
+
+    Sep 08 21:03:07 tcox4.mylabserver.com systemd[1]: Starting NFS server and ser...
+
+    Sep 08 21:03:07 tcox4.mylabserver.com systemd[1]: Started NFS server and serv...
+
+    Hint: Some lines were ellipsized, use -l to show in full.
+
+     
+
+2. Create the file NFS common file in the /etc/default directory. Add the setting that indicates that IDMAPD is 
+needed for NFS file sharing. Edit the IDMAP configuration file, add the domain of the server (Your SERVER1 Lab Server).
+
+    [root@tcox4 ~]# cd /etc/default/
+
+    [root@tcox4 default]# ll
+
+    total 12
+
+    -rw-r--r--. 1 root root  354 Sep 29  2014 grub
+
+    -rw-r--r--. 1 root root 1756 Mar  5  2015 nss
+
+    -rw-r--r--. 1 root root  119 Mar  6  2015 useradd
+
+    [root@tcox4 default]# vim nfs-common
+
+    (NOTE: Add the following line)
+
+    NEED_IDMAPD=YES
+
+    [root@tcox4 etc]# vim idmapd.conf
+
+    (NOTE: Add the following...)
+
+    DOMAIN = SERVER1.mylabserver.com (Again, note your lab server name will be different)
+
+     
+
+3. Using any method you choose, create a directory in the /mnt directory called 'share'. In this directory, 
+create a file with some text called 'shared.txt'.
+
+    [root@tcox4 etc]# mkdir /mnt/share
+
+    [root@tcox4 etc]# chmod 777 /mnt/share
+
+    [root@tcox4 etc]# echo "This is a test file" >> /mnt/share/shared.txt
+
+  
+
+4. Add this directory to the 'exports' file for NFS. Export the file system ONLY to the IP address of the client machine,
+no other special options are required, limit the mount ONLY to that second server's IP.
+
+    [root@tcox4 etc]# vim /etc/exports
+
+    /mnt/share 172.31.117.2
+
+    (NOTE: Your IP will be different)
+
+     
+
+5. Restart the NFS server. Run the appropriate command to show the exported mounts on this localhost.
+
+    [root@tcox4 etc]# systemctl status nfs-server.service -l
+
+    nfs-server.service - NFS server and services
+
+       Loaded: loaded (/usr/lib/systemd/system/nfs-server.service; enabled)
+
+       Active: active (exited) since Tue 2015-09-08 21:12:37 UTC; 2s ago
+
+      Process: 1837 ExecStopPost=/usr/sbin/exportfs -f (code=exited, status=0/SUCCESS)
+
+      Process: 1834 ExecStopPost=/usr/sbin/exportfs -au (code=exited, status=0/SUCCESS)
+
+      Process: 1833 ExecStop=/usr/sbin/rpc.nfsd 0 (code=exited, status=0/SUCCESS)
+
+      Process: 1880 ExecStart=/usr/sbin/rpc.nfsd $RPCNFSDARGS (code=exited, status=0/SUCCESS)
+
+      Process: 1879 ExecStartPre=/usr/sbin/exportfs -r (code=exited, status=0/SUCCESS)
+
+     Main PID: 1880 (code=exited, status=0/SUCCESS)
+
+       CGroup: /system.slice/nfs-server.service
+
+     
+
+    Sep 08 21:12:36 tcox4.mylabserver.com systemd[1]: Starting NFS server and services...
+
+    Sep 08 21:12:36 tcox4.mylabserver.com exportfs[1879]: exportfs: No options for /mnt/share 172.31.117.2: 
+    suggest 172.31.117.2(sync) to avoid warning
+
+    Sep 08 21:12:37 tcox4.mylabserver.com systemd[1]: Started NFS server and services.
+
+    [root@tcox4 etc]# showmount -e localhost
+
+    Export list for localhost:
+
+    /mnt/share 172.31.117.2
