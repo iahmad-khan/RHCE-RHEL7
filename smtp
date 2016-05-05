@@ -1,0 +1,271 @@
+1. Install the 'postfix' SMTP service as needed.
+
+    [root@tcox5 ~]# yum install postfix
+
+    Loaded plugins: fastestmirror
+
+    Loading mirror speeds from cached hostfile
+
+     * base: mirrors.advancedhosters.com
+
+     * extras: mirror.es.its.nyu.edu
+
+     * updates: mirror.es.its.nyu.edu
+
+    Package 2:postfix-2.10.1-6.el7.x86_64 already installed and latest version
+
+    Nothing to do
+
+     
+
+2. Add the name of the mail server (the lab instance) to the main Postfix configuration file and then save and display the setting.
+
+    [root@tcox5 ~]# cd /etc/postfix
+
+    [root@tcox5 postfix]# ll
+
+    total 164
+
+    -rw-r--r--. 1 root root 20876 Jun 10  2014 access
+
+    -rw-r--r--. 1 root root    32 Sep 11 18:22 aliases
+
+    -rw-r--r--. 1 root root 12288 Sep 11 18:22 aliases.db
+
+    -rw-r--r--. 1 root root 11681 Jun 10  2014 canonical
+
+    -rw-r--r--. 1 root root  9904 Jun 10  2014 generic
+
+    -rw-r--r--. 1 root root 21545 Jun 10  2014 header_checks
+
+    -rw-r--r--. 1 root root 27176 Jun 10  2014 main.cf
+
+    -rw-r--r--. 1 root root  6105 Jun 10  2014 master.cf
+
+    -rw-r--r--. 1 root root  6816 Jun 10  2014 relocated
+
+    -rw-r--r--. 1 root root 12549 Jun 10  2014 transport
+
+    -rw-r--r--. 1 root root 12494 Jun 10  2014 virtual
+
+    [root@tcox5 postfix]# vim main.cf
+
+    [root@tcox5 postfix]# cat main.cf | grep myorigin
+
+    # The myorigin parameter specifies the domain that locally-posted
+
+    # myorigin also specifies the default domain name that is appended
+
+    #myorigin = $myhostname
+
+    #myorigin = $mydomain
+
+    myorigin = tcox5.mylabserver.com
+
+ 
+
+3. In the main configuration file, add the following destinations for your mail service in the appropriate location:
+
+      - host.mylabserver.com (note - replace 'host' with your lab server hostname)
+
+      - localhost
+
+      - host (note - replace 'host' with your lab server hostname)
+
+      - localhost.localdomain
+
+      - 127.0.0.1
+
+     [root@tcox5 postfix]# vim main.cf
+
+    [root@tcox5 postfix]# cat main.cf | grep mydestination
+
+    # The mydestination parameter specifies the list of domains that this
+
+    #mydestination = $myhostname, localhost.$mydomain, localhost
+
+    #mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
+
+    #mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain,
+
+    mydestination = tcox5.mylabserver.com, tcox5, localhost.localdomain, localhost, 127.0.0.1
+
+ 
+
+4. In the 'transport' configuration file, change the 'local' configuration values to be appropriate to the current lab server instance you are running on.
+
+    [root@tcox5 postfix]# vim transport
+
+    [root@tcox5 postfix]# tail transport
+
+    # AUTHOR(S)
+
+    #        Wietse Venema
+
+    #        IBM T.J. Watson Research
+
+    #        P.O. Box 704
+
+    #        Yorktown Heights, NY 10598, USA
+
+    #
+
+    #                                                                   TRANSPORT(5)
+
+    #
+
+    tcox5.mylabserver.com   local:
+
+    .tcox5.mylabserver.com  local:
+
+ 
+
+5. Run the command to process the configuration file and transport file changes. Restart the postfix service.
+
+    [root@tcox5 postfix]# postalias aliases
+
+    [root@tcox5 postfix]# ll
+
+    total 164
+
+    -rw-r--r--. 1 root root 20876 Jun 10  2014 access
+
+    -rw-r--r--. 1 root root    32 Sep 11 18:22 aliases
+
+    -rw-r--r--. 1 root root 12288 Sep 11 18:43 aliases.db
+
+    -rw-r--r--. 1 root root 11681 Jun 10  2014 canonical
+
+    -rw-r--r--. 1 root root  9904 Jun 10  2014 generic
+
+    -rw-r--r--. 1 root root 21545 Jun 10  2014 header_checks
+
+    -rw-r--r--. 1 root root 27300 Sep 11 18:42 main.cf
+
+    -rw-r--r--. 1 root root  6105 Jun 10  2014 master.cf
+
+    -rw-r--r--. 1 root root  6816 Jun 10  2014 relocated
+
+    -rw-r--r--. 1 root root 12610 Sep 11 18:39 transport
+
+    -rw-r--r--. 1 root root 12494 Jun 10  2014 virtual
+
+    [root@tcox5 postfix]# systemctl restart postfix
+
+    [root@tcox5 postfix]# systemctl status postfix
+
+    postfix.service - Postfix Mail Transport Agent
+
+       Loaded: loaded (/usr/lib/systemd/system/postfix.service; enabled)
+
+       Active: active (running) since Fri 2015-09-11 18:44:16 UTC; 17s ago
+
+      Process: 1840 ExecStop=/usr/sbin/postfix stop (code=exited, status=0/SUCCESS)
+
+      Process: 1853 ExecStart=/usr/sbin/postfix start (code=exited, status=0/SUCCESS)
+
+      Process: 1851 ExecStartPre=/usr/libexec/postfix/chroot-update (code=exited, status=0/SUCCESS)
+
+      Process: 1849 ExecStartPre=/usr/libexec/postfix/aliasesdb (code=exited, status=0/SUCCESS)
+
+     Main PID: 1925 (master)
+
+       CGroup: /system.slice/postfix.service
+
+               ├─1925 /usr/libexec/postfix/master -w
+
+               ├─1926 pickup -l -t unix -u
+
+               └─1927 qmgr -l -t unix -u
+
+     
+
+    Sep 11 18:44:15 tcox5.mylabserver.com systemd[1]: Starting Postfix Mail Transport Agent...
+
+    Sep 11 18:44:16 tcox5.mylabserver.com postfix/master[1925]: daemon started -- version 2.10.1, configuration /etc/postfix
+
+    Sep 11 18:44:16 tcox5.mylabserver.com systemd[1]: Started Postfix Mail Transport Agent.
+
+ 
+
+6. Install the 'mutt' command line mail client. Start it up, creating the mailbox as needed. Run the command as the 'user' user and again, create the mailbox needed. Finally, use the mutt command line to send a message to the root user and then display it within that account.
+
+    [root@tcox5 postfix]# yum install mutt
+
+    Loaded plugins: fastestmirror
+
+    Repodata is over 2 weeks old. Install yum-cron? Or run: yum makecache fast
+
+    base                                                                                                                                                                                      | 3.6 kB  00:00:00
+
+    extras                                                                                                                                                                                    | 3.4 kB  00:00:00
+
+    updates                                                                                                                                                                                   | 3.4 kB  00:00:00
+
+    (1/2): extras/7/x86_64/primary_db                                                                                                                                                         |  74 kB  00:00:00
+
+    (2/2): updates/7/x86_64/primary_db                                                                                                                                                        | 3.3 MB  00:00:00
+
+    Determining fastest mirrors
+
+     * base: mirrors.advancedhosters.com
+
+     * extras: mirror.es.its.nyu.edu
+
+     * updates: mirror.es.its.nyu.edu
+
+    Resolving Dependencies
+
+    --> Running transaction check
+
+    (NOTE: Installation continues here)
+
+    ...
+
+    1. Run 'mutt' as root user, answer 'yes' to creating the mailbox
+
+    2. Run 'mutt' as user user, answer 'yes' to creating the mailbox
+
+    [root@tcox5 postfix]# mutt -s "Testing..." user@tcox5.mylabserver.com
+
+    [root@tcox5 postfix]# su - user
+
+    Last login: Fri Sep 11 18:21:52 UTC 2015 from 216.46.60.98 on pts/0
+
+    [user@tcox5 ~]$ mutt
+
+     
+
+    From root@tcox5.mylabserver.com  Fri Sep 11 18:47:18 2015
+
+    Return-Path: <root@tcox5.mylabserver.com>
+
+    X-Original-To: user@tcox5.mylabserver.com
+
+    Delivered-To: user@tcox5.mylabserver.com
+
+    Received: by tcox5.mylabserver.com (Postfix, from userid 0)
+
+            id 7A7F78880F4; Fri, 11 Sep 2015 18:47:18 +0000 (UTC)
+
+    Date: Fri, 11 Sep 2015 18:47:18 +0000
+
+    From: root <root@tcox5.mylabserver.com>
+
+    To: user@tcox5.mylabserver.com
+
+    Subject: Testing...
+
+    Message-ID: <20150911184718.GA1930@tcox5.mylabserver.com>
+
+    MIME-Version: 1.0
+
+    Content-Type: text/plain; charset=us-ascii
+
+    Content-Disposition: inline
+
+    User-Agent: Mutt/1.5.21 (2010-09-15)
+
+     
+
+    This is a test
