@@ -1,0 +1,53 @@
+1. Install the appropriate MariaDB packages for a MariaDB server.
+
+    [user@linuxacademy:~]$ sudo yum install mariadb mariadb-client 
+
+     
+
+2. Using the appropriate service management commands, set the MariaDB server daemon to start automatically on boot. After that, start the MariaDB server.
+
+    [user@linuxacademy:~]$ sudo systemctl enable mariadb
+
+    [user@linuxacademy:~]$ sudo systemctl start mariadb
+
+ 
+
+3. Once MariaDB has started, secure the installation using the appropriate MariaDB binary command in /usr/bin. Answer the questions posed to obtain the following results:
+
+    Set the root password
+    Remove anonymous users
+    Disallow remote root login
+    Remove test users and database
+    Reload the privileges
+
+    [user@linuxacademy:~]$ sudo /usr/bin/mysql_secure_installation
+
+    (Output)
+
+    Questions posed, answer as indicated in the instructions above
+
+    (Output)
+
+     
+
+4. Verify that you can login to the database instance using the root account credentials provided in Step #3.
+
+    [user@linuxacademy:~]$ mysql -u root -p
+
+    (Output)
+
+    Enter password: 
+    Welcome to the MySQL monitor.  Commands end with ; or \g.
+    Your MySQL connection id is 14
+    Server version: 5.6.26 MySQL Community Server (GPL)
+
+    Copyright (c) 2000, 2015, Oracle and/or its affiliates. All rights reserved.
+
+    Oracle is a registered trademark of Oracle Corporation and/or its
+    affiliates. Other names may be trademarks of their respective
+    owners.
+
+    Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+    mysql> 
+    (Output)
