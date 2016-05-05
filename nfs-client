@@ -1,0 +1,121 @@
+1. On the SERVER machine (from our previous exercise "Server Setup"), obtain the IP address or name of the Linux Academy Lab Server the exports are configured on.
+
+    [root@tcox4 ~]# ifconfig
+
+    eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 9001
+
+            inet 172.31.24.77  netmask 255.255.240.0  broadcast 172.31.31.255
+
+            inet6 fe80::cd7:93ff:fec5:fc6f  prefixlen 64  scopeid 0x20
+
+            ether 0e:d7:93:c5:fc:6f  txqueuelen 1000  (Ethernet)
+
+            RX packets 6917  bytes 4045970 (3.8 MiB)
+
+            RX errors 0  dropped 0  overruns 0  frame 0
+
+            TX packets 3712  bytes 401716 (392.3 KiB)
+
+            TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+ 
+
+2. On the CLIENT machine (our second Linux Academy Lab Server), run the appropriate command using the IP or name of the SERVER machine to determine what mounts are available for our use.
+
+    [user@tcox5 ~]$ showmount -e 172.31.24.77
+
+    Export list for 172.31.24.77:
+
+    /mnt/share 172.31.117.2
+
+ 
+
+3. Using any method you choose, create a directory under /mnt called 'share'. Make sure it has 'rwx' permissions.
+
+    [root@tcox5 ~]# mkdir share
+
+    [root@tcox5 ~]# chmod 777 share -R
+
+     
+
+4. At the command line, execute a mount command with the appropriate options and structure, to mount the SERVER exported share in the directory created in Step #3 above. Verify that the mount succeeds by listing the directory and the contents of the test file created in the previous exercise.
+
+    [root@tcox5 ~]# mount -t nfs 172.31.24.77://mnt/share share
+
+    [root@tcox5 ~]# df -h
+
+    Filesystem               Size  Used Avail Use% Mounted on
+
+    /dev/xvda1                20G  4.6G   16G  23% /
+
+    devtmpfs                 477M     0  477M   0% /dev
+
+    tmpfs                    497M   84K  496M   1% /dev/shm
+
+    tmpfs                    497M   13M  484M   3% /run
+
+    tmpfs                    497M     0  497M   0% /sys/fs/cgroup
+
+    172.31.24.77:/mnt/share   20G  4.6G   16G  23% /root/share
+
+    [root@tcox5 ~]# ls -al /root/share
+
+    total 8
+
+    drwxrwxrwx. 2 root root   23 Sep  8 21:10 .
+
+    dr-xr-x---. 5 root root 4096 Sep  8 21:15 ..
+
+    -rw-r--r--. 1 root root   20 Sep  8 21:10 shared.txt
+
+    [root@tcox5 ~]# cat /root/share/shared.txt 
+
+    This is a test file
+
+ 
+
+5. Create the appropriate entry in the 'fstab' file on the CLIENT system that will remount that filesystem exported shared from SERVER on reboot. Display the result.
+
+    [root@tcox5 ~]# vim /etc/fstab
+
+    [root@tcox5 ~]# cat /etc/fstab
+
+    #
+
+    # /etc/fstab
+
+    # Created by anaconda on Mon Sep 29 21:48:54 2014
+
+    #
+
+    # Accessible filesystems, by reference, are maintained under '/dev/disk'
+
+    # See man pages fstab(5), findfs(8), mount(8) and/or blkid(8) for more info
+
+    #
+
+    UUID=0f790447-ebef-4ca0-b229-d0aa1985d57f /                       xfs     defaults        1 1
+
+    /root/swap swap swap sw 0 0 
+
+    172.31.24.77://mnt/share /mnt/share nfs   defaults  0 0
+
+    [root@tcox5 ~]# reboot
+
+    (AFTER REBOOT)
+
+    [root@tcox5 ~]# df -h
+
+    Filesystem               Size  Used Avail Use% Mounted on
+
+    /dev/xvda1                20G  4.6G   16G  23% /
+
+    devtmpfs                 477M     0  477M   0% /dev
+
+    tmpfs                    497M   84K  496M   1% /dev/shm
+
+    tmpfs                    497M   13M  484M   3% /run
+
+    tmpfs                    497M     0  497M   0% /sys/fs/cgroup
+
+    172.31.24.77:/mnt/share   20G  4.6G   16G  23% /root/share
