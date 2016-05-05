@@ -1,0 +1,132 @@
+1. Create a directory in your home directory called "reports". Create a file called 'systemuse.rep' using any method you choose.
+
+    root@tcox1:~# mkdir reports
+
+    root@tcox1:~# cd reports
+
+    root@tcox1:~/reports# echo "SYSTEM USAGE REPORT - TODAY'S DATE HERE" >> systemuse.rep
+
+ 
+
+ 
+
+2. Run a command that pipes it's output to the 'systemuse.rep' file. The command should display all current commands being run by the user in the current shell.
+
+     root@tcox1:~/reports# echo "PROCESSES BY USER IN TERMINAL" >> systemuse.rep && ps >> systemuse.rep
+
+ 
+
+3. Using the appropriate command, append to the 'systemuse.rep' file the system load and all mount points present on the system, in 'human readable' format.
+
+    root@tcox1:~/reports# echo "CURRENT MOUNT DRIVES AND MOUNTS IN READABLE FORMAT" >> systemuse.rep && df -h >> systemuse.rep 
+
+    root@tcox1:~/reports# echo "CURRENT SYSTEM LOAD" >> systemuse.rep && w >> systemuse.rep
+
+ 
+
+4. List all the directories in the /var directory such that their total disk usage, by directory, is appended to the 'systemuse.rep' file, again in 'human readable' format.
+
+    echo "DISK USAGE IN VAR, BY DIRECTORY, BY SIZE" >> systemuse.rep && du -sch /var/* | sort >> systemuse.rep 
+
+ 
+
+5. Run the appropriate command to show the available memory in the system, in megabytes, appended to the 'systemuse.rep' file.
+
+    root@tcox1:~/reports# echo "AVAILABLE MEMORY, IN MEGABYTES" >> systemuse.rep && free -m >> systemuse.rep
+
+ 
+
+6. Display the 'systemuse.rep' file to verify it contains the output expected from Steps #1 through #5.
+
+root@tcox1:~/reports# cat systemuse.rep 
+
+    SYSTEM USAGE REPORT - TODAY'S DATE HERE
+
+    PROCESSES BY USER IN TERMINAL
+
+      PID TTY          TIME CMD
+
+     1932 pts/1    00:00:00 su
+
+     1933 pts/1    00:00:00 bash
+
+     4927 pts/1    00:00:00 ps
+
+    CURRENT MOUNT DRIVES AND MOUNTS IN READABLE FORMAT
+
+    Filesystem      Size  Used Avail Use% Mounted on
+
+    /dev/xvda1       15G  2.4G   12G  17% /
+
+    none            4.0K     0  4.0K   0% /sys/fs/cgroup
+
+    udev            492M   12K  492M   1% /dev
+
+    tmpfs           100M  804K   99M   1% /run
+
+    none            5.0M     0  5.0M   0% /run/lock
+
+    none            497M   80K  497M   1% /run/shm
+
+    none            100M   16K  100M   1% /run/user
+
+    CURRENT SYSTEM LOAD
+
+     17:01:30 up  1:09,  2 users,  load average: 0.00, 0.01, 0.05
+
+    USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
+
+    user     pts/1    99-198-189-168.m 15:52    2.00s  0.18s  0.02s sshd: user [priv]   
+
+    DISK USAGE IN VAR, BY DIRECTORY, BY SIZE
+
+    0 /var/lock
+
+    0 /var/run
+
+    163M /var/lib
+
+    20K /var/crash
+
+    20K /var/www
+
+    4.0K /var/backups
+
+    4.0K /var/local
+
+    4.0K /var/mail
+
+    4.0K /var/opt
+
+    4.0K /var/tmp
+
+    44K /var/spool
+
+    500M /var/cache
+
+    669M total
+
+    7.0M /var/log
+
+    AVAILABLE MEMORY, IN MEGABYTES
+
+                 total       used       free     shared    buffers     cached
+
+    Mem:           992        626        365          1         31        361
+
+    -/+ buffers/cache:        234        758
+
+     
+
+    Swap:            0          0          0
+
+     
+
+BONUS: Prepend the output of each command above with a comment, in CAPS, that explains the section you are adding.
+
+    BONUS Solution was added to each command line above (the ECHO statements).
+
+ 
+
+ 
+
