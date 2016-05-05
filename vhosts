@@ -1,0 +1,71 @@
+1. Make sure that your system has Apache Web Server installed. Verify that the server is running, listening for HTTP 
+connections on port 80.
+
+    [root@tcox5 httpd]# telnet localhost 80
+
+    Trying ::1...
+
+    Connected to localhost.
+
+    Escape character is '^]'.
+
+    helo
+
+    501 Not Implemented
+
+    helo to /index.html not supported.
+
+    Connection closed by foreign host.
+
+ 
+
+2. Move to the appropriate directory and list the available VHOSTS (in the example below, we created a 'vhost.d' 
+directory for just vhost files). Create a new VHOST called "XXX.mylabserver.com" where XXX matches the name of 
+your Linux Academy Lab Server as display in your server tab, add the .conf extension to the end of the file. 
+As part of the name, differentiate the HTTP version of the file so that we can create a separate configuration for 
+HTTPS in a later exercise.
+
+    [root@tcox5 httpd]# cd vhost.d
+
+    [root@tcox5 vhost.d]# ll
+
+    total 8
+
+    -rw-r--r--. 1 root root 118 Aug 29 17:22 tcox5.mylabserver.com_http.conf
+
+    -rw-r--r--. 1 root root 228 Aug 29 17:44 tcox5.mylabserver.com_https.conf
+
+    [root@tcox5 vhost.d]# cat tcox5.mylabserver.com_http.conf 
+
+3. Edit that configuration file so that is contains the appropriate sections and variables for the site path, error 
+and access logs and the server name and any aliases. Display the contents once completed.
+
+    (NOTE: VirtualHost *:80 Definition)
+
+    ServerName tcox5.mylabserver.com
+
+    ServerAlias tcox4
+
+     
+
+    DocumentRoot /var/www/html/tcox5
+
+ 
+
+4. Create a directory to contain your custom VHOST site files. Once created, add the following HTML code to a file in 
+that directory called 'index.html'
+
+  -XXX.MYLABSERVER.COM
+
+  - Please note: replace 'xxx' above with the name of your Linux Academy Lab Server as indicated in the server tab of the site
+
+    [root@tcox5 httpd]# mkdir /var/www/html/tcox5
+
+    [root@tcox5 httpd]# echo "XXX.MYLABSERVER.COM" >> /var/www/html/tcox5/index.html
+
+5. Execute the appropriate command to enable that new VHOST configuration on the site. Restart the web server. Once 
+restarted, browser (by NAME) to the site and verify that the file created in Step #4 is what appears.
+
+    [root@tcox5 httpd]# systemctl restart httpd
+
+    (NOTE: You will have to open a web browser and navigate to the site by NAME to see the new index.html page we created)
