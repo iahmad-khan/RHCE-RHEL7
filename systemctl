@@ -1,0 +1,127 @@
+1. After logging into your system, execute the appropriate command and options to display all the system services involved in the boot process, regardless of their status (running, stopped, failed).
+
+root@linuxacademy:~# systemctl
+
+(Output) ...
+
+(Ouput) network.service                                 loaded active exited    LSB: Bring up/down networking
+
+(Ouput)  NetworkManager.service                          loaded active running   Network Manager
+
+(Ouput)  nfs-config.service                              loaded active exited    Preprocess NFS configuration
+
+(Ouput) pcscd.service                                   loaded active running   PC/SC Smart Card Daemon
+
+(Output) ... this is a sample output section, you will have many more that are listed
+
+ANOTHER POTENTIAL SOLUTION
+
+root@linuxacademy:~# systemctl status
+
+(Output) ...
+
+(Output) gssproxy.service -> '/org/freedesktop/systemd1/unit/gssproxy_2eservice'
+
+ 
+
+gssproxy.service - GSSAPI Proxy Daemon
+
+   Loaded: loaded (/usr/lib/systemd/system/gssproxy.service; disabled)
+
+   Active: active (running) since Sun 2015-08-02 13:17:08 CDT; 7h ago
+
+  Process: 506 ExecStart=/usr/sbin/gssproxy -D (code=exited, status=0/SUCCESS)
+
+ Main PID: 558 (gssproxy)
+
+   CGroup: /system.slice/gssproxy.service
+
+           └─558 /usr/sbin/gssproxy -D
+
+ 
+
+Aug 02 13:17:08 coxandassoc.local systemd[1]: Started GSSAPI Proxy Daemon.
+
+initial-setup-text.service -> '/org/freedesktop/systemd1/unit/initial_2dsetup_2dtext_2eservice'
+
+(Output) ... sample single service status, you will have many sections like this
+
+ 
+
+2. Execute the 'systemctl' command with the appropriate options to determine the current status and related information for the 'sshd' daemon.
+
+root@linuxacademy:~# systemctl status sshd
+
+(Output) ...
+
+sshd.service - OpenSSH server daemon
+
+   Loaded: loaded (/usr/lib/systemd/system/sshd.service; enabled)
+
+   Active: active (running) since Sun 2015-08-02 13:17:26 CDT; 7h ago
+
+ Main PID: 1235 (sshd)
+
+   CGroup: /system.slice/sshd.service
+
+           └─1235 /usr/sbin/sshd -D
+
+ 
+
+Aug 02 13:17:26 linuxacademy.local systemd[1]: Started OpenSSH server daemon.
+
+Aug 02 13:17:26 linuxacademy.local sshd[1235]: Server listening on 0.0.0.0 port 22.
+
+Aug 02 13:17:26 linuxacademy.local sshd[1235]: Server listening on :: port 22.
+
+(Output) ... sample output, your PID and/or port may be different depending on your system
+
+ 
+
+3. Determine whether the 'crond' daemon is running. Using 'systemctl', stop the 'crond' service and then query it's status to verify that it has stopped. Restart the process once it is verified as stopped.
+
+root@linuxacademy:~# systemctl status crond
+
+(Output) Will give you the PID and status of crond, which should be running
+
+root@linuxacademy:~# systemctl stop crond
+
+(Output) nothing unless it errors
+
+root@linuxacademy:~# systemctl status crond
+
+(Output) Will repeat the status from above, only indicating the service is 'inactive (dead)'
+
+root@linuxacademy:~# systemctl start crond
+
+(Output) nothing unless it errors
+
+ 
+
+4. Using the 'systemctl' command, disable the 'crond' service so that it no longer starts on boot. Reboot (stop and start) your Linux Academy server. Once it is back up, verify the status of the service right after reboot.
+
+root@linuxacademy:~# systemctl disable crond
+
+(Output) rm '/etc/systemd/system/multi-user.target.wants/crond.service'
+
+[STOP AND START YOUR LINUX ACADEMY LAB SERVER HERE, THEN LOG BACK IN]
+
+root@linuxacademy:~# systemctl status crond
+
+(Output) Will indicate that the process is stopped/inactive
+
+ 
+
+5. Re-enable your 'crond' service. Reboot the server if you like, or simply start the service mannually after re-enabling it. Verify the service is running.
+
+root@linuxacademy:~# systemctl enable crond
+
+(Output) ln -s '/usr/lib/systemd/system/crond.service' '/etc/systemd/system/multi-user.target.wants/crond.service'
+
+root@linuxacademy:~# systemctl start crond
+
+(Output) Nothing unless it errors
+
+root@linuxacademy:~# systemctl status crond
+
+(Output) Will give you the PID and status of crond, which should be running
