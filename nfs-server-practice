@@ -1,0 +1,31 @@
+130  yum groupinstall fileserver
+  131  yum groupinstall file-server
+  132  hostname
+  133  hostnamectl 
+  135  hostnamectl set-hostname rhel7-server01.mylabserver.com
+  136  firewall-cmd --permanent --add-service=nfs
+  137  firewall-cmd --reload
+  138  systemctl enable rpcbind nfs-server
+  139  mkdir -p /krbdata
+  140  chmod 0777 /krbdata/
+  143  ls -lZd /krbdata/
+  144  semanage fcontext -a -t public_content_rw_t "/krbdata(/.*)?"
+  145  ls -lZd /krbdata/
+  148  restorecon -R /krbdata/
+  149  ls -lZd /krbdata/
+  151  semanage boolean -l | grep nfs
+  152  getsebool nfs_export_all_rw
+  153  getsebool nfs_export_all_ro
+  154  semanage boolean -l | grep nfs
+  155  nano /etc/exports
+  156  systemctl start rpcbind
+  157  systemctl start nfs-server
+  158  exportfs
+  159  exportfs -avr
+  160  showmount -e localhost
+  161  hostname
+  162  ip a s
+  163  nano /etc/exports
+  164  showmount -e localhost
+  165  exportfs -avr
+  166  showmount -e localhost
