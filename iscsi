@@ -24,3 +24,24 @@
    26  touch test1
    27  iscsiadm -m session -P 3
    28  umount /mnt/iscsi/
+
+
+#server/target , configuration done using iscsiadm not shown here
+103  yum -y install targetcli
+  104  systemctl enable target
+  105  fdisk -l
+  106  targetcli 
+  107  cat /etc/target/saveconfig.json 
+  108  less /etc/target/saveconfig.json 
+  109  yum -y install firewalld
+  110  firewall-cmd --permanent --add-port=3260/tcp 
+  111  systemctl enable firewalld
+  112  systemctl start firewalld
+  113  firewall-cmd --permanent --add-port=3260/tcp 
+  119  firewall-cmd --get-default-zone 
+  120  firewall-cmd --list-all
+  121  firewall-cmd --reload 
+  122  firewall-cmd --list-all
+  124  systemctl start target
+  125  systemctl status target
+  126  systemctl status target -l
