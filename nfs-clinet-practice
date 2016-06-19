@@ -1,0 +1,13 @@
+35  yum install -y nfs-utils
+   36  mkdir -p /mnt/share
+   37  mount -t nfs rhel7-server01.mylabserver.com:/krbdata /mnt/share
+   38  vi /etc/hosts
+   39  mount -t nfs rhel7-server01.mylabserver.com:/krbdata /mnt/share
+   40  ip a s
+   41  ping rhel7-server01.mylabserver.com
+   42  mount -t nfs rhel7-server01.mylabserver.com:/krbdata /mnt/share
+   43  cd /mnt/share/
+   44  ls
+   45  umount /mnt/share/
+   46  cd
+   47  umount /mnt/share/
