@@ -1,0 +1,26 @@
+#initiator/client 
+
+    3  yum install iscsi-initiater-utils
+    4  yum install iscsi-initiator-utils
+    5  vi /etc/iscsi/initiatorname.iscsi 
+    6  vi /etc/iscsi/iscsid.conf 
+    7  systemctl start iscsi
+    8  systemctl enable iscsi
+    9  iscsiadm --mode discovery --type sendtargets --portal 172.31.115.93
+   10  iscsiadm --mode node --target iqn.2015-05.com.mylabserver:t1 --portal 172.31.115.93 --login 
+   11  lsblk --iscsi
+   12  lsblk --scsi
+   13  lsblk 
+   14  df -h
+   15  fdisk -l
+   16  mkfs.ext4 /dev/sda 
+   17  blkid
+   18  vi /etc/fstab 
+   19  mkdir -p /mnt/iscsi
+   21  mount -a
+   22  df -hT
+   23  history 
+   24  cd /mnt/iscsi/
+   26  touch test1
+   27  iscsiadm -m session -P 3
+   28  umount /mnt/iscsi/
