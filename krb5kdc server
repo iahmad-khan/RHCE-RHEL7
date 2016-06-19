@@ -1,0 +1,65 @@
+4  yum -y install krb5-server krb5-workstation pam_krb5
+    5   yum-config-manager --disable rhui-REGION-client-config-server-7
+    6  yum -y install krb5-server krb5-workstation pam_krb5
+    7  cd /var/kerberos/krb5kdc/
+    8  ls
+    9  vi kdc.conf 
+   10  ip a s
+   11  hostname
+   12  yum -y install nano
+   13  nano /etc/hosts
+   14  ip a s
+   15  nano /etc/hosts
+   16  nano kdc.conf 
+   17  nano /etc/krb5.conf 
+   18  hostname
+   19  nano /etc/krb5.conf 
+   20  ls
+   21  nano kadm5.acl 
+   22  cd
+   23  cd -
+   24  cd
+   25  which krb5_util
+   26  yum -y install krb5-utils
+   27  yum -y install krb5-util
+   28  kdb5_util create -s -r MYLABSERVER.COM
+   29  systemctl enable krb5kdc kadmin
+   30  systemctl start krb5kdc
+   31  systemctl status krb5kdc
+   32  systemctl status krb5kdc -l
+   33  cd /var/kerberos/krb5kdc/
+   34  nano kdc.conf 
+   35  nano /etc/krb5.conf 
+   36  systemctl start krb5kdc
+   37  systemctl start kadmin
+   38  kadmin.local 
+   39  ls -al /etc/krb5.keytab 
+   40  cat /etc/krb5.keytab 
+   41  nano /etc/ssh/ssh_config 
+   42  systemctl reload sshd
+   43  authconfig --enablekrb5 --update
+   44  systemctl status firewalld
+   45  systemctl enable firewalld
+   46  yum -y install firewalld
+   47  systemctl enable firewalld
+   48  systemctl start firewalld
+   49  cd /etc/firewalld/services/
+   50  ls
+   51  firewall-cmd --permanent --add-port=88/tcp
+   52  firewall-cmd --permanent --add-port=88/udp
+   53  ls
+   54  firewall-cmd --reload 
+   55  ls
+   56  cd ..
+   57  ls
+   58  cd zones/
+   59  ls
+   60  cat public.xml
+   61  cd ..
+   62  cd services/
+   63  nano kerberos.xml
+   64  firewall-cmd --permanent --add-service=kerberos
+   65  firewall-cmd --reload 
+   66  useradd krbtest
+   67  su krbtest
+   68  su - krbtest
