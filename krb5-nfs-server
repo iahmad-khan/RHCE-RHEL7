@@ -1,0 +1,102 @@
+    4  yum -y update
+    5  hostname
+    6  ip a s
+    7  nano /etc/hosts
+    8  yum -y install krb5-server krb5-workstation pam_krb5
+    9  sed -i 's/EXAMPLE.COM/MYLABSERVER.COM/g' /var/kerberos/krb5kdc/kdc.conf 
+   10  nano /var/kerberos/krb5kdc/kdc.conf 
+   11  sed -i 's/EXAMPLE.COM/MYLABSERVER.COM/g' /etc/krb5.conf 
+   12  nano /etc/krb5.conf 
+   13  sed -i 's/example.com/mylabserver.com/g' /etc/krb5.conf 
+   14  nano /etc/krb5.conf 
+   15  hostname
+   16  nano /etc/krb5.conf 
+   17  nano /var/kerberos/krb5kdc/kadm5.acl
+   18  hostname
+   19  systemctl disable iptables
+   20  systemctl disable iptables.
+   21  systemctl disable iptables
+   22  systemctl status iptables
+   23  kdb5_util create -s -r MYLABSERVER.COM
+   24  systemctl enable krb5kdc kadmin
+   25  systemctl start krb5kdc
+   26  systemctl start kadmin
+   27  useradd test
+   28  kadmin.local 
+   29  nano /etc/ssh/ssh_config 
+   30  systemctl reload sshd
+   31  authconfig --enablekrb5 --update
+   32  nano /etc/firewalld/services/kerberos.xml
+   33  yum -y install firewalld
+   34  nano /etc/firewalld/services/kerberos.xml
+   35  systemctl enable firewalld
+   36  systemctl start firewalld
+   37  firewall-cmd reload
+   38  firewall-cmd --reload
+   39  firewall-cmd --permanent add-port=22/tcp
+   40  firewall-cmd --permanent --add-port=22/tcp
+   41  firewall-cmd --permanent --add-port=80/tcp
+   42  firewall-cmd --reload
+   43  firewall-cmd --permanent --add-service=kerberos
+   44  firewall-cmd --reload
+   45  su - test
+   46  ssh test@ijazahmad7221.mylabserver.com
+   47  su - test
+   48  kinit
+   49  kadmin
+   50  kinit
+   51  su - test
+   52  nano /etc/ssh/ssh_config 
+   53  systemctl reload sshd
+   54  su - test
+   55  cat /etc/hosts
+   56  cat /etc/krb5.conf 
+   57  yum groupinstall -y file-server
+   58  firewall-cmd --permanent --add-service=nfs
+   59  firewall-cmd --reload
+   60  systemctl enable rpcbind nfs-server
+   61  systemctl start rpcbind nfs-server
+   62  mkdir -p /home/tools
+   63  chmod 0777 /home/tools
+   64  mkdir -p /home/guests
+   65  chmod 0777 /home/guests
+   66  yum install -y setroubleshoot-server
+   67  semanage fcontext -a -t public_content_rw_t "/home/tools(/.*)?"
+   68  semanage fcontext -a -t public_content_rw_t "/home/guests(/.*)?"
+   69  restorecon -R /home/tools
+   70  restorecon -R /home/guests
+   71  ls -lZd /home/guests
+   72  semanage boolean -l | egrep "nfs|SELinux"
+   73  setsebool -P use_nfs_home_dirs on
+   74  setsebool -P nfs_export_all_ro on
+   75  setsebool -P nfs_export_all_rw on
+   76  nano /etc/exports
+   77  cd
+   78  ls
+   79  cat swap 
+   80  ls
+   81  cat /etc/issue
+   82  uname -a
+   83  exportfs -avr
+   84  nano /etc/exports
+   85  exportfs -avr
+   86  systemctl restart nfs-server
+   87  showmount -e localhost
+   88  cd /home/tools/
+   89  ls
+   90  cd
+   91  kadmin
+   92  nano /etc/exports
+   93  exportfs -avr
+   94  showmount -e localhost
+   95  systemctl enable nfs-secure-server && systemctl start nfs-secure-server
+   96  systemctl enable nfs-secure-server
+   97  yum search nfs-secure-server
+   98  firewall-cmd --port-add=111/tcp
+   99  firewall-cmd --add-port=111/tcp
+  100  firewall-cmd --add-port=20048/tcp
+  101  firewall-cmd --permanent --add-service=mountd
+  102  firewall-cmd --permanent --add-service=rpcbind
+  103  firewall-cmd --permanent --add-service=rpc-bind
+  104  firewall-cmd --reload
+  105  authconfig --enablekrb5 --update
