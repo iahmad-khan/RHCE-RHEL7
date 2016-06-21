@@ -1,0 +1,46 @@
+5  ip a s
+    6  nano /etc/hosts
+    7  hostname
+    8  nano /etc/hosts
+    9  cat /etc/hosts
+   10  yum install -y krb5-workstation pam_krb5
+   11  scp root@ijazahmad7221.mylabserver.com:/etc/krb5.conf /etc/krb5.conf
+   12  nano /etc/krb5.conf 
+   13  useradd test
+   14  kadmin 
+   15  nano /etc/ssh/ssh_config 
+   16  systemctl reload sshd
+   17  authconfig --enablekrb5 --update
+   18  su - test
+   19  yum install -y nfs-utils
+   20  mount -t nfs nfsserver.example.com:/home/tools /mnt
+   21  mount -t nfs ijazahmad7221.mylabserver.com:/home/tools /mnt
+   22  cd /mnt/
+   23  ls
+   24  df -h
+   25  pwd
+   26  umount /mnt/
+   27  cd ..
+   28  umount /mnt/
+   29  mkdir /mnt/tools
+   30  mount -t nfs ijazahmad7221.mylabserver.com:/home/tools /mnt/tools
+   31  df -h
+   32  cd /mnt/tools/
+   33  touch test1
+   34  cd
+   35  umount /mnt/tools/
+   36  df -h
+   37  kadmin 
+   38  systemctl enable nfs-client.target && systemctl start nfs-client.target
+   39  mount -t nfs4 -o sec=krb5 ijazahmad7221.mylabserver.com:/home/tools /mnt/tools/
+   40  cd /mnt/tools/
+   41  ls
+   42  toch test2
+   43  touch test2
+   44  showmount -e ijazahmad7221.mylabserver.com
+   45  touch test3
+   46  df -h
+   47  su - test
+   48  klist 
+   49  adduser noacc
+   50  su - noacc
